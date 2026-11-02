@@ -1,0 +1,143 @@
+@import "tailwindcss";
+
+@theme {
+  --color-milk: #fff9ee;
+  --color-cream: #fff3dc;
+  --color-green: #2f7653;
+  --color-green-dark: #245d41;
+  --color-sun: #ffd56a;
+  --color-sun-deep: #f6bf3a;
+  --color-mint: #e7f1dd;
+  --color-ink: #243c30;
+  --color-ink-soft: #4a5e53;
+  --color-peach: #f4b89f;
+  --color-peach-soft: #fde6dc;
+  --color-wa: #10773d;
+
+  --font-sans: var(--font-noto), "Noto Sans", system-ui, sans-serif;
+
+  --radius-blob: 58% 42% 46% 54% / 50% 46% 54% 50%;
+
+  --animate-float: float 9s ease-in-out infinite;
+  --animate-drift: drift 26s ease-in-out infinite;
+  --animate-spin-slow: spin 60s linear infinite;
+
+  @keyframes float {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-10px);
+    }
+  }
+  @keyframes drift {
+    0%,
+    100% {
+      transform: translateX(0);
+    }
+    50% {
+      transform: translateX(18px);
+    }
+  }
+}
+
+/* Всегда светлое оформление — независимо от системной темы устройства. */
+:root {
+  color-scheme: light;
+  background-color: #fff9ee;
+  color: #243c30;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background-color: #fff9ee;
+  color: #243c30;
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  line-height: 1.6;
+  overflow-x: clip;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Якоря не прячутся под фиксированной шапкой. */
+section[id] {
+  scroll-margin-top: var(--header-h, 72px);
+}
+
+:focus-visible {
+  outline: 3px solid #2f7653;
+  outline-offset: 3px;
+  border-radius: 10px;
+}
+.focus-light:focus-visible {
+  outline-color: #ffd56a;
+}
+
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/*
+ * Две компоновки на одном URL. До гидратации в HTML есть обе — показываем нужную медиазапросом.
+ * После гидратации LayoutSwitch оставляет в DOM только одну и ставит data-layout.
+ */
+html:not([data-layout]) .mobile-root {
+  display: none;
+}
+@media (max-width: 63.999rem) {
+  html:not([data-layout]) .website-root {
+    display: none;
+  }
+  html:not([data-layout]) .mobile-root {
+    display: block;
+  }
+}
+
+/* Мягкое появление при прокрутке — только если пользователь не просил уменьшить движение. */
+html.motion [data-reveal] {
+  opacity: 0;
+  transform: translateY(22px);
+  transition:
+    opacity 0.7s ease,
+    transform 0.8s cubic-bezier(0.2, 0.7, 0.2, 1);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+html.motion [data-reveal].is-in {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Органическая форма фотографии на главном экране. */
+.blob {
+  border-radius: 58% 42% 46% 54% / 50% 46% 54% 50%;
+}
+.blob-alt {
+  border-radius: 44% 56% 52% 48% / 56% 44% 56% 44%;
+}
+
+.wavy-underline {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 12' preserveAspectRatio='none'%3E%3Cpath d='M2 8c12-6 22-6 34 0s22 6 34 0 22-6 34 0 10 4 14 2' fill='none' stroke='%23FFD56A' stroke-width='5' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: 0 100%;
+  background-size: 100% 0.32em;
+  padding-bottom: 0.12em;
+}
